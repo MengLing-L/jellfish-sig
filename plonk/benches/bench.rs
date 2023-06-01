@@ -123,14 +123,14 @@ macro_rules! plonk_prove_bench {
         }
 
         println!(
-            "{} times proving time for {}, {}: {} s",
+            "{} times proving time for {}, {}: {} ns",
             // stringify!($bench_curve),
             NUM_REPETITIONS,
             "signature",
             stringify!($bench_plonk_type),
             // start.elapsed().as_nanos() / NUM_REPETITIONS as u128 / $num_gates  as u128
             // start.elapsed().as_secs() / NUM_REPETITIONS  as u64
-            start.elapsed().as_secs()  as u64
+            start.elapsed().as_nanos()  as u64
         );
     };
 }

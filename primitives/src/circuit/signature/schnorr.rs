@@ -149,7 +149,7 @@ where
         Ok((x, y))
     }
 }
-trait SignatureHelperGadget<F, P>
+pub trait SignatureHelperGadget<F, P>
 where
     F: PrimeField,
     P: Config<BaseField = F>,
@@ -307,7 +307,7 @@ mod tests {
         Ok(())
     }
 
-    fn build_verify_sig_circuit<F, P>(
+    pub fn build_verify_sig_circuit<F, P>(
         vk: &VerKey<P>,
         msg: &[F],
         sig: &Signature<P>,

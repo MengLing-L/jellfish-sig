@@ -31,5 +31,5 @@ pub mod prf;
 pub mod rescue;
 pub mod signatures;
 pub mod vrf;
-pub mod gpu;
+// pub mod gpu;
 pub(crate) mod utils;

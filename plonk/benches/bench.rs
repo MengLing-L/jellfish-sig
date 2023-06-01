@@ -10,12 +10,12 @@
 
 use ark_bls12_377::{Bls12_377, Fr as Fr377};
 use ark_bls12_381::{Bls12_381, Fr as Fr381};
-use ark_ed_on_bn254::EdwardsConfig as Param254;
+// use ark_ed_on_bn254::EdwardsConfig as Param254;
+use ark_ed_on_bls12_381::EdwardsConfig as Param381;
 use ark_ec::{
     twisted_edwards::{Affine, TECurveConfig as Config},
     AffineRepr,
 };
-use ark_bn254::{Bn254, Fr as Fr254};
 use ark_bw6_761::{Fr as Fr761, BW6_761};
 use ark_ff::PrimeField;
 use jf_plonk::{
@@ -106,7 +106,7 @@ macro_rules! plonk_prove_bench {
     ($bench_curve:ty, $bench_field:ty, $bench_plonk_type:expr, $num_gates:expr) => {
         let rng = &mut jf_utils::test_rng();
         // let cs = gen_circuit_for_bench::<$bench_field>($num_gates, $bench_plonk_type).unwrap();
-        let cs = gen_circuit_for_bench::<_, Param254>($num_gates, $bench_plonk_type).unwrap(); 
+        let cs = gen_circuit_for_bench::<_, Param381>($num_gates, $bench_plonk_type).unwrap(); 
 
         let max_degree = cs.srs_size().unwrap();
         let srs = PlonkKzgSnark::<$bench_curve>::universal_setup(max_degree, rng).unwrap();
@@ -136,13 +136,13 @@ macro_rules! plonk_prove_bench {
 }
 
 fn bench_prove() {
-    plonk_prove_bench!(Bn254, Fr381, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+    plonk_prove_bench!(Bls12_381, Fr381, PlonkType::TurboPlonk, NUM_GATES_LARGE);
 }
 
 macro_rules! plonk_verify_bench {
     ($bench_curve:ty, $bench_field:ty, $bench_plonk_type:expr, $num_gates:expr) => {
         let rng = &mut jf_utils::test_rng();
-        let cs = gen_circuit_for_bench::<_, Param254>($num_gates, $bench_plonk_type).unwrap();
+        let cs = gen_circuit_for_bench::<_, Param381>($num_gates, $bench_plonk_type).unwrap();
 
         let max_degree = $num_gates + 2;
         let srs = PlonkKzgSnark::<$bench_curve>::universal_setup(max_degree, rng).unwrap();
@@ -175,7 +175,7 @@ macro_rules! plonk_verify_bench {
 }
 
 fn bench_verify() {
-    plonk_verify_bench!(Bn254, Fr254, PlonkType::TurboPlonk, NUM_GATES_LARGE);
+    plonk_verify_bench!(Bls12_381, Fr381, PlonkType::TurboPlonk, NUM_GATES_LARGE);
     // plonk_verify_bench!(Bls12_377, Fr377, PlonkType::TurboPlonk, NUM_GATES_LARGE);
     // plonk_verify_bench!(Bn254, Fr254, PlonkType::TurboPlonk, NUM_GATES_LARGE);
     // plonk_verify_bench!(BW6_761, Fr761, PlonkType::TurboPlonk, NUM_GATES_SMALL);
